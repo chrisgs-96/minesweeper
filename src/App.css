@@ -1,38 +1,186 @@
-.App {
-  text-align: center;
+body {
+  width: 100%;
+  height: 100%;
+  background-image: url('./img/background.jpg');
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.App-logo {
-  height: 40vmin;
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 5;
+}
+
+.invisible-modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 6;
+}
+
+.modal-background .modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 10;
+  padding: 16px 32px;
+  border-radius: 8px;
+}
+
+.modal-background .modal .explanation {
+  font-size: 24px;
+  color: black;
+  line-height: 32px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.modal-background .modal .mini-flex-2 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0px 32px;
+  margin-top: 2px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.modal-background .modal .mini-flex-2 span {
+  display: inline-block;
+  min-width: 50px;
+}
+
+.modal-background .modal .mini-flex-2 input {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.modal-background .modal .mini-flex {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0px 8px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.modal-background .modal .mini-flex:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.modal-background .modal .mini-flex img {
+  height: 24px;
+  width: 24px;
+}
+
+.modal-background .modal .buttons-container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: calc(50% - 8px) calc(50% - 8px);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.modal-background .modal button {
+  width: 100%;
+  outline: none;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 18px;
+  line-height: 24px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.modal-background .modal button:hover {
+  cursor: pointer;
+  filter: invert(1);
+}
+
+
+.minesweeper-outer-window {
+  min-width: 100px;
+  min-height: 100px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 4px 4px 2px 4px;
+}
+
+.minesweeper-outer-window.has-lost {
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.minesweeper-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.minesweeper-cell {
+  width: 32px;
+  height: 32px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: black;
   color: white;
+  border-radius: 4px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, .05);
+  font-weight: bold;
+  font-size: 18px;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
-.App-link {
-  color: #61dafb;
+.minesweeper-cell img {
+  width: 100%;
+  height: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.minesweeper-cell:hover {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.menu-bar-container {
+  display: grid;
+  grid-template-columns: calc(50% - 4px) calc(50% - 4px);
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.menu-bar-container .option {
+  color: black;
+  text-align: center;
+  padding: 8px 8px;
+  width: 100%;
+  border-radius: 4px;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.menu-bar-container .option:hover {
+  cursor: pointer;
+  color: white;
+  background-color: black;
 }
