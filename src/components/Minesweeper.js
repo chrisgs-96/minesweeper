@@ -68,6 +68,7 @@ function Minesweeper(props) {
           value: arr[i][j],
           isVisible: false,
           isBomb: arr[i][j] === -1,
+          isFlagged: false,
         }
       }
     }
@@ -86,6 +87,9 @@ function Minesweeper(props) {
       for (let i = 0; i < arr.length; i += 1) {
         for (let j = 0; j < arr[i].length; j += 1) {
           arr[i][j].isVisible = true;
+          if(arr[i][j].isFlagged && !arr[i][j].isBomb) {
+            arr[i][j].isFlagged=false;
+          }
         }
       }
       showPopup('You lost. Press restart to try again!');
@@ -93,10 +97,50 @@ function Minesweeper(props) {
     setDashboard([...arr]);
   }
 
+  const toggleFlag = (i, j) => {
+    let arr = dashboard;
+    if (arr[i][j].isVisible) {
+      return;
+    }
+    arr[i][j].isFlagged = !arr[i][j].isFlagged;
+    setDashboard([...arr]);
+  }
+
+  // calls the countNeighboringMines for every cell of the array
+  const completeDashboard = (arr) => {
+    for (let i = 0; i < arr.length; i += 1) {
+      for (let j = 0; j < arr[i].length; j += 1) {
+        if (!arr[i][j].isBomb) {
+          countNeighboringMines(arr, i, j);
+        }
+      }
+    }
+  }
+
+  // Checks the surrounding neighbors of the cell that is at [i,j] and counts how many of them are mines.
+  const countNeighboringMines = (arr, y, x) => {
+    let minesFound = 0;
+    for (let i = -1; i <= +1; i += 1) {
+      for (let j = -1; j <= 1; j += 1) {
+        // we check to see if the neighbor that we're checking is inside the bounds
+        // for example arr[-1,-1] is obviously an unallowed cell
+        // or on a 5x5 array arr[7,7] is unallowed too!
+        if (y + i >= 0 && x + j >= 0 && y + i < arr.length && x + j < arr[y].length) {
+          if (arr[y + i][x + j].isBomb) {
+            minesFound += 1;
+          }
+        }
+      }
+    }
+    arr[y][x].value = minesFound;
+    // return arr;
+  };
+
   const initializeBoard = () => {
     let arr = createEmptyDashboard();
     fillWithMines(arr);
     addVisibilityParamsToArray(arr);
+    completeDashboard(arr)
     setDashboard([...arr]);
     setHasLost(false);
   }
@@ -107,11 +151,11 @@ function Minesweeper(props) {
 
   return (
     <>
-      {popupProps.isVisible && 
+      {popupProps.isVisible &&
         <PopupMessage
-        popupProps={popupProps}
-        setPopupProps={setPopupProps}
-      />}
+          popupProps={popupProps}
+          setPopupProps={setPopupProps}
+        />}
       <div className={"minesweeper-outer-window" + (hasLost ? ' has-lost ' : '')}>
         <GameMenu
           setGameProperties={setGameProperties}
@@ -119,7 +163,7 @@ function Minesweeper(props) {
           showPopup={showPopup}
         />
         {dashboard && dashboard.map((row, i) => {
-          return <Row reveal={reveal} cells={row} i={i} />
+          return <Row toggleFlag={toggleFlag} reveal={reveal} cells={row} i={i} />
         })}
       </div>
     </>
