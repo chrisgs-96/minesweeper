@@ -59,7 +59,7 @@ function ChangeDifficultyPopup(props) {
   }
 
   return (
-    <div className="modal-background">
+    <div className="modal-background" style={{ pointerEvents: 'auto' }}>
       <div className="invisible-modal-background" onClick={() => setIsPopupVisible(false)} />
       <div className="modal">
         <span className="explanation">Please select your desired difficulty: </span>

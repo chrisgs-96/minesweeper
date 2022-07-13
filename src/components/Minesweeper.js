@@ -19,7 +19,6 @@ function Minesweeper(props) {
     height: 9,
     mines: 10,
   })
-
   const showPopup = msg => {
     setPopupProps({
       isVisible: true,
@@ -75,20 +74,42 @@ function Minesweeper(props) {
     return arr;
   }
 
+  const revealNeighboringCells = (arr, y, x) => {
+    console.log(y, x)
+    // if y,x are within range, the cell has a value of 0 and the cell is hidden from the user proceed
+    if (y >= 0 && y < arr.length && x >= 0 && x < arr[y].length && !arr[y][x].isVisible && arr[y][x].value === 0) {
+      arr[y][x].isVisible = true;
+      for (let i = -1; i <= 1; i += 1) {
+        for (let j = -1; j <= 1; j += 1) {
+          if (i !== 0 || j !== 0) {
+            revealNeighboringCells(arr, y + i, x + j);
+          }
+        }
+      }
+    }
+  }
+
   // Reveals the cell's value to the user, if the value is a bomb
   // then (for starters) an alert message is showing on the screen
   const reveal = (i, j) => {
     let arr = dashboard;
     if (!arr[i][j].isVisible) {
-      arr[i][j].isVisible = true;
+      if (arr[i][j].isFlagged) {
+        // do nothing
+      }
+      else if (arr[i][j].value === 0) {
+        revealNeighboringCells(arr, i, j);
+      } else {
+        arr[i][j].isVisible = true;
+      }
     }
     if (arr[i][j].isBomb) {
       setHasLost(true);
       for (let i = 0; i < arr.length; i += 1) {
         for (let j = 0; j < arr[i].length; j += 1) {
           arr[i][j].isVisible = true;
-          if(arr[i][j].isFlagged && !arr[i][j].isBomb) {
-            arr[i][j].isFlagged=false;
+          if (arr[i][j].isFlagged && !arr[i][j].isBomb) {
+            arr[i][j].isFlagged = false;
           }
         }
       }
